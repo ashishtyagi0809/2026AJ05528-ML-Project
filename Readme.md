@@ -91,16 +91,14 @@ All five models are trained on the same training split. Each model is saved as a
 
 ### Observations on the performance of each model
 
-<!-- WRITE THESE IN YOUR OWN WORDS (3 marks). 2-3 sentences each. -->
-
-| ML Model Name                         | Observation about model performance |
-| ------------------------------------- | ----------------------------------- |
-| Logistic Regression                   | TODO                                |
-| Decision Tree                         | TODO                                |
-| KNN                                   | TODO                                |
-| Naive Bayes                           | TODO                                |
-| Support Vector Machine                | TODO                                |
-| **Overall, Winner for your dataset?** | TODO                                |
+| ML Model Name                         | Observation about model performance                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Logistic Regression                   | It separates the two classes well and has the best AUC of all five models (0.906). Its recall is only moderate (0.60) because it uses the default 0.5 threshold, so it misses some >50K people. Lowering the threshold would catch more of them, since the ranking itself is strong.                                                                                                    |
+| Decision Tree                         | Best model on accuracy (0.860), precision (0.777), F1 and MCC (0.590). Limiting the depth to 10 stops the tree from memorising the training data, but it can still learn useful combinations such as marital status, education and capital gain. It is a little cautious: it predicted 1,756 people as >50K out of 2,338 real ones, which gives high precision but lower recall (0.58). |
+| KNN                                   | Slightly weaker than the other models (accuracy 0.838, MCC 0.537). After one-hot encoding there are 105 features, mostly 0/1 columns, so distances become less meaningful. KNN also treats every feature as equally important, so it cannot learn that capital gain or marital status matters more than native country.                                                                 |
+| Naive Bayes                           | Weakest model (accuracy 0.570, MCC 0.350). It predicts >50K far too often: 6,266 predictions when only 2,338 people are actually >50K. This gives very high recall (0.94) but poor precision (0.35). The reason is that it assumes the features are independent and normally distributed, which is not true for this data with many one-hot columns.                                    |
+| Support Vector Machine                | Very close to the top on every metric (accuracy 0.857, AUC 0.902, MCC 0.583). But it was by far the slowest model: it took about 163 seconds to train in the lab, compared with under 8 seconds for the others, and it is also slow to predict because it keeps 13,158 support vectors. So it gives good results at the highest cost.                                                   |
+| **Overall, Winner for your dataset?** | **Decision Tree.** It has the highest MCC (0.590), which is the best metric here because the classes are imbalanced (76% vs 24%). It is also the best on accuracy, precision and F1. Logistic Regression is a close second and has the best AUC, and it is simpler and faster.                                                                                                          |
 
 ## How to Run Locally
 
